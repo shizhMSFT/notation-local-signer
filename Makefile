@@ -28,5 +28,5 @@ test: ## run unit test
 
 .PHONY: install
 install: bin/notation-local-signer ## installs the plugin
-	mkdir -p  ~/.config/notation/plugins/azure-kv/
-	cp bin/notation-local-signer ~/.config/notation/plugins/azure-kv/
+	mkdir -p  ~/.config/notation/plugins/local-signer/
+	cp bin/notation-local-signer ~/.config/notation/plugins/local-signer/
