@@ -55,10 +55,7 @@ func runDescribeKey() error {
 	}
 	protoKeySpec, err := proto.EncodeKeySpec(keySpec)
 	if err != nil {
-		return proto.RequestError{
-			Code: proto.ErrorCodeGeneric,
-			Err:  fmt.Errorf("failed to encode key spec: %w", err),
-		}
+		return fmt.Errorf("failed to encode key spec: %w", err)
 	}
 	resp := &proto.DescribeKeyResponse{
 		KeyID:   req.KeyID,

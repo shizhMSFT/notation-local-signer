@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto"
+	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -11,6 +13,7 @@ import (
 	"github.com/notaryproject/notation-core-go/x509"
 	"github.com/notaryproject/notation-go/plugin/proto"
 	"github.com/spf13/cobra"
+	"github.com/veraison/go-cose"
 )
 
 func signCommand() *cobra.Command {
@@ -83,35 +86,37 @@ func sign(req *proto.GenerateSignatureRequest) (*proto.GenerateSignatureResponse
 	}
 
 	// sign
-	signer, err := signature.NewLocalSigner(certs, key)
+	keySpec, err := signature.ExtractKeySpec(certs[0])
 	if err != nil {
 		return nil, proto.RequestError{
-			Code: proto.ErrorCodeGeneric,
-			Err:  fmt.Errorf("failed to create signer: %w", err),
+			Code: proto.ErrorCodeValidation,
+			Err:  fmt.Errorf("failed to extract key spec: %w", err),
 		}
 	}
-	sig, certs, err := signer.Sign(req.Payload)
+	alg, err := getSignatureAlgorithmFromKeySpec(keySpec)
 	if err != nil {
 		return nil, proto.RequestError{
-			Code: proto.ErrorCodeGeneric,
-			Err:  fmt.Errorf("failed to sign payload: %w", err),
+			Code: proto.ErrorCodeValidation,
+			Err:  fmt.Errorf("failed to get signature algorithm: %w", err),
 		}
+	}
+	cryptoSigner, ok := key.(crypto.Signer)
+	if !ok {
+		return nil, fmt.Errorf("private key is not a crypto.Signer")
+	}
+	signer, err := cose.NewSigner(alg, cryptoSigner)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create signer: %w", err)
+	}
+	sig, err := signer.Sign(rand.Reader, req.Payload)
+	if err != nil {
+		return nil, fmt.Errorf("failed to sign payload: %w", err)
 	}
 
 	// generate response
-	keySpec, err := signer.KeySpec()
-	if err != nil {
-		return nil, proto.RequestError{
-			Code: proto.ErrorCodeGeneric,
-			Err:  fmt.Errorf("failed to get key spec: %w", err),
-		}
-	}
 	signingAlgorithm, err := proto.EncodeSigningAlgorithm(keySpec.SignatureAlgorithm())
 	if err != nil {
-		return nil, proto.RequestError{
-			Code: proto.ErrorCodeGeneric,
-			Err:  fmt.Errorf("failed to encode signing algorithm: %w", err),
-		}
+		return nil, fmt.Errorf("failed to encode signing algorithm: %w", err)
 	}
 	certChain := make([][]byte, 0, len(certs))
 	for _, cert := range certs {
@@ -123,4 +128,33 @@ func sign(req *proto.GenerateSignatureRequest) (*proto.GenerateSignatureResponse
 		SigningAlgorithm: string(signingAlgorithm),
 		CertificateChain: certChain,
 	}, nil
+}
+
+func getSignatureAlgorithmFromKeySpec(keySpec signature.KeySpec) (cose.Algorithm, error) {
+	switch keySpec.Type {
+	case signature.KeyTypeRSA:
+		switch keySpec.Size {
+		case 2048:
+			return cose.AlgorithmPS256, nil
+		case 3072:
+			return cose.AlgorithmPS384, nil
+		case 4096:
+			return cose.AlgorithmPS512, nil
+		default:
+			return 0, &signature.UnsupportedSigningKeyError{Msg: fmt.Sprintf("RSA: key size %d not supported", keySpec.Size)}
+		}
+	case signature.KeyTypeEC:
+		switch keySpec.Size {
+		case 256:
+			return cose.AlgorithmES256, nil
+		case 384:
+			return cose.AlgorithmES384, nil
+		case 521:
+			return cose.AlgorithmES512, nil
+		default:
+			return 0, &signature.UnsupportedSigningKeyError{Msg: fmt.Sprintf("EC: key size %d not supported", keySpec.Size)}
+		}
+	default:
+		return 0, &signature.UnsupportedSigningKeyError{Msg: "key type not supported"}
+	}
 }

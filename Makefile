@@ -30,3 +30,7 @@ test: ## run unit test
 install: bin/notation-local-signer ## installs the plugin
 	mkdir -p  ~/.config/notation/plugins/local-signer/
 	cp bin/notation-local-signer ~/.config/notation/plugins/local-signer/
+
+.PHONY: rotate-key
+rotate-key: ## generate a new key pair for notation signing
+	scripts/rotate-key.sh

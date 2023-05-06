@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# Notation signing key
+notation.key
+
+# Binary build
+bin/
