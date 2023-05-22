@@ -5,8 +5,8 @@ github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/notaryproject/notation-core-go v1.0.0-rc.3 h1:ukRBOwctPF0bWLFs+ThDHwgj+L3+AHdyaOqmziLp8w0=
 github.com/notaryproject/notation-core-go v1.0.0-rc.3/go.mod h1:XWAlhOksW+c9AA/TyobkPv5Xoz8RWGwOAoDdybZLEiI=
-github.com/notaryproject/notation-go v1.0.0-rc.4 h1:thTDY0wD6YS4EJeHt9kF0bZF9Z9Vin0tidalhJt1Q9o=
-github.com/notaryproject/notation-go v1.0.0-rc.4/go.mod h1:UEEAyBOSlx2yDDiMoofBz635ewcL/KU48AX1WDd5Les=
+github.com/notaryproject/notation-go v1.0.0-rc.5 h1:LduZJHOR9oONyL/CFgDg7lKudiQNKDT/lWEyVlVSN0c=
+github.com/notaryproject/notation-go v1.0.0-rc.5/go.mod h1:HTLaDq84hp2wAU2ZpeucH/9nJRg7PnufVtCU4dhz/X8=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/spf13/cobra v1.7.0 h1:hyqWnYt1ZQShIddO5kBpj3vu05/++x6tJ6dg8EC572I=
 github.com/spf13/cobra v1.7.0/go.mod h1:uLxZILRyS/50WlhOIKD7W6V5bgeIt+4sICxh6uRMrb0=
@@ -16,6 +16,6 @@ github.com/veraison/go-cose v1.0.0 h1:Jxirc0rl3gG7wUFgW+82tBQNeK8T8e2Bk1Vd298ob4
 github.com/veraison/go-cose v1.0.0/go.mod h1:7ziE85vSq4ScFTg6wyoMXjucIGOf4JkFEZi/an96Ct4=
 github.com/x448/float16 v0.8.4 h1:qLwI1I70+NjRFUR3zs1JPUCgaCXSh3SW62uAKT1mSBM=
 github.com/x448/float16 v0.8.4/go.mod h1:14CWIYCyZA/cWjXOioeEpHeN/83MdbZDRQHoFcYsOfg=
-golang.org/x/crypto v0.7.0 h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=
+golang.org/x/crypto v0.9.0 h1:LF6fAI+IutBocDJ2OT0Q1g8plpYljMZ4+lty+dsqw3g=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=

@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/notaryproject/notation-core-go v1.0.0-rc.3
-	github.com/notaryproject/notation-go v1.0.0-rc.4
+	github.com/notaryproject/notation-go v1.0.0-rc.5
 	github.com/spf13/cobra v1.7.0
 	github.com/veraison/go-cose v1.0.0
 )
